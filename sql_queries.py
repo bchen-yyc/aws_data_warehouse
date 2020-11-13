@@ -63,10 +63,10 @@ diststyle even;
 songplay_table_create = ("""
 CREATE TABLE IF NOT EXISTS FactSongPlays
 (songplay_id bigint IDENTITY(0,1) PRIMARY KEY, 
-start_time   timestamp,
+start_time   timestamp SORTKEY,
 user_id      int, 
 level        varchar, 
-song_id      varchar,
+song_id      varchar DISTKEY,
 artist_id    varchar, 
 session_id   int, 
 location     varchar,
@@ -79,22 +79,22 @@ CREATE TABLE IF NOT EXISTS DimUsers
 first_name   varchar, 
 last_name    varchar,
 gender       varchar, 
-level        varchar)
+level        varchar SORTKEY)
 diststyle all;
 """)
 
 song_table_create = ("""
 CREATE TABLE IF NOT EXISTS DimSongs 
-(song_id     varchar     PRIMARY KEY,
+(song_id     varchar     PRIMARY KEY  DISTKEY,
 title        varchar     NOT NULL,
 artist_id    varchar     NOT NULL,
-year         smallint    NOT NULL,
+year         smallint    NOT NULL SORTKEY,
 duration     float       NOT NULL)
 """)
 
 artist_table_create = ("""
 CREATE TABLE IF NOT EXISTS DimArtists 
-(artist_id   varchar     PRIMARY KEY, 
+(artist_id   varchar     PRIMARY KEY SORTKEY, 
 name         varchar     NOT NULL, 
 location     varchar,
 latitude     float, 
@@ -104,7 +104,7 @@ diststyle all;
 
 time_table_create = ("""
 CREATE TABLE IF NOT EXISTS DimTime 
-(start_time  timestamp PRIMARY KEY, 
+(start_time  timestamp PRIMARY KEY SORTKEY, 
 hour         smallint NOT NULL, 
 day          smallint NOT NULL,
 week         smallint NOT NULL, 
@@ -177,6 +177,7 @@ LEFT JOIN StagSongs s
 ON  e.artist = s.artist_name
 AND e.song   = s.title
 AND e.length = s.duration
+WHERE e.page = 'NextSong'
 """)
 
 # QUERY LISTS
