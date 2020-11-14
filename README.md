@@ -5,26 +5,29 @@ A startup called Sparkify wants to analyze the data they've been collecting on s
 The data resides in S3. The ETL pipeline extracts the data from S3 and stages them in Redshift, transform them and load them into a star schema optimized for queries on song play analysis. This includes the following tables.
 
 **Stage Table**
+
 1. StagEvents - load data directly from log data folder using COPY clouse
-artist, auth, firstName, gender, itemInSession, lastName, length, level,
-location, method, page, registration, sessionId, song, stats, ts, userAgent, userId
+   * artist, auth, firstName, gender, itemInSession, lastName, length, level,
+   * location, method, page, registration, sessionId, song, stats, ts, userAgent, userId
 2. StagSongs - load data directly from songs data folder using COPY clouse
-songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
+   * songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent
 
 **Fact Table**
+
 3. songplays - records in log data associated with song plays i.e. records with page NextSong
-num_songs, artist_id, artist_latitude, artist_longitude, artist_location, 
-artist_name, song_id, title, duration, year
+   * num_songs, artist_id, artist_latitude, artist_longitude, artist_location, 
+   * artist_name, song_id, title, duration, year
 
 **Dimension Tables**
+
 4. users - users in the app
-    ser_id, first_name, last_name, gender, level
+   * ser_id, first_name, last_name, gender, level
 5. songs - songs in music database
-    song_id, title, artist_id, year, duration
+   * song_id, title, artist_id, year, duration
 6. artists - artists in music database
-    artist_id, name, location, latitude, longitude
+   * artist_id, name, location, latitude, longitude
 7. time - timestamps of records in songplays broken down into specific units
-    start_time, hour, day, week, month, year, weekday
+   * start_time, hour, day, week, month, year, weekday
 ### Databset
 ##### Song Dataset
 The song dataset is place in S3 bucket `s3://udacity-dend/song_data`. It is a subset of real data from the [Million Song Dataset]. Each file is in JSON format and contains metadata about a song and the artist of that song. The files are partitioned by the first three letters of each song's track ID. For example, here are filepaths to two files in this dataset.
